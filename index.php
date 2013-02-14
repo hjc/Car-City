@@ -16,8 +16,8 @@ ini_set('display_errors', '1');
 
 echo "hi";
 
-$a = new Car();
-echo Car::$car_count;
+//$a = new LandVehicle();
+//echo LandVehicle::$car_count;
 
 $a->set_password('abc');
 $a->start('cde');

@@ -27,43 +27,61 @@ abstract class Vehicle
 {
     //helps us make the salt and has other useful methods
     use Text_Helper;
-    /** @var int contains total count of vehicles */
+    /** @var int Contains total count of vehicles */
     public static $vehicle_count = 0;
 
+    /** @var int The individual number of this vehicle */
     public $vehicle_number = 0;
 
-    /** @var int holds vehicle's current speed */
+    /** @var int Holds vehicle's current speed */
     public $current_speed = 0;
 
-    /** @var int holds vehicle's top speed */
+    /** @var int Holds vehicle's top speed */
     public $top_speed;
 
-    /** @var bool is the engine on? alternatively, is the car started? */
+    /** @var bool Is the engine on? alternatively, is the car started? */
     public $engine_on = FALSE;
 
-    /** @var string a salt we will append to our vehicle's password for safety */
+    /** @var string A salt we will append to our vehicle's password for safety */
     protected  $vehicle_salt;
 
-    /** @var string the hashed password that starts the vehicle, we will see if the
+    /** @var string The hashed password that starts the vehicle, we will see if the
      *              key matches this after it has been hashed. */
     protected $hashed_password;
 
-    /** @var bool are the headlights on? */
+    /** @var bool Are the headlights on? */
     protected $headlights_on = FALSE;
+
+    /** @var int The weight of the vehicle */
+    public $weight;
+
+    /** @var int How many people the vehicle can hold. */
+    public $capacity;
 
     /**
      * Construct the object, increasing vehicle count, making a future salt, and
      *  setting the vehicle number.
+     *
+     * @param int $weight       The weight of the vehicle, in lbs.
+     * @param int $cap     The max number of people the vehicle can hold
      */
-    function __construct() {
+    function __construct($weight, $cap) {
         //make a salt for this vehicle's password
         $this->vehicle_salt = $this->create_salt();
 
         //set vehicle number and then increment vehicle count
         $this->vehicle_number = Vehicle::$vehicle_count++;
+
+        $this->weight = $weight;
+        $this->capacity = $cap;
+
+        echo "Created new Vehicle";
     }
 
 
+    /**
+     * @param string $string
+     */
     function set_password($string) {
         $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
     }
