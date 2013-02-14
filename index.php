@@ -16,11 +16,16 @@ ini_set('display_errors', '1');
 
 echo "hi";
 
-//$a = new LandVehicle();
-//echo LandVehicle::$car_count;
+$a = new Motorcycle(115, 125);
+echo LandVehicle::$land_count;
 
 $a->set_password('abc');
 $a->start('cde');
 $a->start('abc');
 
-echo $a->car_number, $a->vehicle_number;
+echo $a->motorcycle_number, $a->vehicle_number;
+
+echo '<br>';
+$a->check_tire_pressure();
+$a->wipers_on();
+$a->wipers_off();

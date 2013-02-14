@@ -22,7 +22,7 @@ abstract class LandVehicle extends Vehicle
     public static $land_count = 0;
 
     /** @var int The number of this land vehicle */
-    public $land_number;
+    public $landvehicle_number;
 
     /** @var int The number of wheels this vehicle has */
     public $wheel_count;
@@ -31,14 +31,15 @@ abstract class LandVehicle extends Vehicle
     public $tire_pressures = [];
 
     /**
-     * Construct this car by setting its car number, increasing car count and
-     *   calling parent constructor to do generic Vehicle maintenance.
+     * Construct this Land Vehicle by setting its Land Vehicle number,
+     *   increasing Land Vehicle count and calling parent constructor
+     *   to do generic Vehicle maintenance.
      *
      * @param int $weight       The weight of the vehicle, in lbs.
      * @param int $cap     The max number of people the vehicle can hold
      */
     function __construct($weight, $cap) {
-        $this->land_number = LandVehicle::$land_count++;
+        $this->landvehicle_number = LandVehicle::$land_count++;
         echo "Created new Land Vehicle";
         parent::__construct($weight, $cap);
     }
@@ -50,8 +51,22 @@ abstract class LandVehicle extends Vehicle
      *   parent method.
      */
     function check_tire_pressure() {
-        for ($i = 0; $i < count($this->tire_pressures); $i++) {
-            echo "Pressure in tire " . $i + 1 . ": " . $this->tire_pressures[$i] . " psi\n";
+        for ($i = 0; $i < count($this->tire_pressures); ++$i) {
+            echo "Pressure in tire " . ($i + 1) . ": " . $this->tire_pressures[$i] . " psi\n";
+        }
+    }
+
+    /**
+     * A function for land vehicles to read their tire pressure and populate
+     *   the relevant property. Uses the number of wheels to size the $tire_pressure
+     *   array.
+     *
+     * @see check_tire_pressure() to print the tire pressure
+     */
+    //abstract public function read_tire_pressure();
+    public function read_tire_pressure() {
+        for ($i = 0; $i < $this->wheel_count ; $i++) {
+            $this->tire_pressures[$i] = rand(65, 115);
         }
     }
 
@@ -95,19 +110,11 @@ abstract class LandVehicle extends Vehicle
             echo "LandVehicle started. \n";
         }
         else {
-            echo "FAILURE! Password mismatch in starting car number: {$this->land_number}";
+            echo "FAILURE! Password mismatch in starting car number: {$this->landvehicle_number}";
         }
     }
 
     public function stop() {
-
-    }
-
-    public function headlights_on() {
-
-    }
-
-    public function headlights_off() {
 
     }
 }

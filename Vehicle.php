@@ -39,11 +39,17 @@ abstract class Vehicle
     /** @var int Holds vehicle's top speed */
     public $top_speed;
 
+    /** @var int The weight of the vehicle */
+    public $weight;
+
+    /** @var int How many people the vehicle can hold. */
+    public $capacity;
+
     /** @var bool Is the engine on? alternatively, is the car started? */
-    public $engine_on = FALSE;
+    protected $engine_on = FALSE;
 
     /** @var string A salt we will append to our vehicle's password for safety */
-    protected  $vehicle_salt;
+    protected $vehicle_salt;
 
     /** @var string The hashed password that starts the vehicle, we will see if the
      *              key matches this after it has been hashed. */
@@ -52,11 +58,8 @@ abstract class Vehicle
     /** @var bool Are the headlights on? */
     protected $headlights_on = FALSE;
 
-    /** @var int The weight of the vehicle */
-    public $weight;
-
-    /** @var int How many people the vehicle can hold. */
-    public $capacity;
+    /** @var bool Are the windshield wipers on? */
+    protected $wipers_on = FALSE;
 
     /**
      * Construct the object, increasing vehicle count, making a future salt, and
@@ -75,15 +78,66 @@ abstract class Vehicle
         $this->weight = $weight;
         $this->capacity = $cap;
 
-        echo "Created new Vehicle";
+        echo "Created new Vehicle\n";
+    }
+
+    protected  function name() {
+        $class = get_class($this);
+
+        $count_name = strtolower($class) . '_number';
+        return $class . "#" . $this->$count_name;
     }
 
 
     /**
-     * @param string $string
+     * Set and store a password in a vehicle for later use. This serves as a key for
+     *  a vehicle;
+     *
+     * @param string $string    The string that we are going to hash and store. This becomes the vehicle's
+     *                          password/key and is used to "activate" it
      */
     function set_password($string) {
         $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
+    }
+
+    /**
+     * Turn the vehicle's windshield wipers on and say so
+     */
+    public function wipers_on() {
+        $this->wipers_on = TRUE;
+        echo get_class($this) . " turning windshield wipers on!\n";
+    }
+
+    /**
+     * Turn the vehicle's windshield wipers off and say so
+     */
+    public function wipers_off() {
+        $this->wipers_on = FALSE;
+        $class = get_class($this);
+
+        $count_name = strtolower($class) . '_number';
+        echo '<br>' . $count_name . '<br>';
+        echo $class . "#" . $this->$count_name . " turning windshield wipers off!\n";
+    }
+
+    public function check_wipers() {
+        //echo $this->wipers_on ?
+    }
+
+    /**
+     * Turn the vehicle's headlights off
+     */
+    function headlights_off() {
+        $this->headlights_on = FALSE;
+        echo get_class($this) . " turning headlights off!\n";
+    }
+
+    /**
+     * Turn the vehicle's headlights on
+     */
+    function headlights_on() {
+        $this->headlights_on = TRUE;
+        echo get_class($this) . " turning headlights on!\n";
     }
 
     /**
@@ -115,14 +169,4 @@ abstract class Vehicle
      * Stop the vehicle.
      */
     abstract public function stop();
-
-    /**
-     * Turn the vehicle's headlights on
-     */
-    abstract public function headlights_on();
-
-    /**
-     * Turn the vehicle's headlights off
-     */
-    abstract public function headlights_off();
 }
