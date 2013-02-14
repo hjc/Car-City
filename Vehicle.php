@@ -8,16 +8,6 @@
  */
 
 /**
- * PHP Magic function that gets called every time an undefined class is referenced,
- *  it will include the class if it can.
- *
- * @param string $class_name       The name of the class we want to include.
- */
-function __autoload($class_name) {
-    include dirname(__FILE__) . $class_name . '.php';
-}
-
-/**
  * A class that represents the very basic concept of a Vehicle.
  *
  * Is an abstract class defining generic functions that all vehicles share:
@@ -26,18 +16,21 @@ function __autoload($class_name) {
  * - Accelerate
  * - Decelerate
  *
+ * Also implements a few persistent elements, namely a password and salt that,
+ *  in theory, would replace the physical key.
+ *
  * @package     Vehicles
  * @subpackage  VehicleGeneric
  * @author      Hayden Chudy <hjc1710@gmail.com>
- *
- * @var
- * @var
- * @static int
  */
 abstract class Vehicle
 {
+    //helps us make the salt and has other useful methods
+    use Text_Helper;
     /** @var int contains total count of vehicles */
     public static $vehicle_count = 0;
+
+    public $vehicle_number = 0;
 
     /** @var int holds vehicle's current speed */
     public $current_speed = 0;
@@ -45,11 +38,34 @@ abstract class Vehicle
     /** @var int holds vehicle's top speed */
     public $top_speed;
 
+    /** @var bool is the engine on? alternatively, is the car started? */
+    public $engine_on = FALSE;
+
+    /** @var string a salt we will append to our vehicle's password for safety */
+    protected  $vehicle_salt;
+
+    /** @var string the hashed password that starts the vehicle, we will see if the
+     *              key matches this after it has been hashed. */
+    protected $hashed_password;
+
+    /** @var bool are the headlights on? */
+    protected $headlights_on = FALSE;
+
     /**
-     * Construct the object, increasing vehicle count
+     * Construct the object, increasing vehicle count, making a future salt, and
+     *  setting the vehicle number.
      */
     function __construct() {
-        ++Vehicle::$vehicle_count;
+        //make a salt for this vehicle's password
+        $this->vehicle_salt = $this->create_salt();
+
+        //set vehicle number and then increment vehicle count
+        $this->vehicle_number = Vehicle::$vehicle_count++;
+    }
+
+
+    function set_password($string) {
+        $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
     }
 
     /**
@@ -81,4 +97,14 @@ abstract class Vehicle
      * Stop the vehicle.
      */
     abstract public function stop();
+
+    /**
+     * Turn the vehicle's headlights on
+     */
+    abstract public function headlights_on();
+
+    /**
+     * Turn the vehicle's headlights off
+     */
+    abstract public function headlights_off();
 }

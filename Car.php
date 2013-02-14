@@ -7,16 +7,6 @@
  * To change this template use File | Settings | File Templates.
  */
 /**
- * PHP Magic function that gets called every time an undefined class is referenced,
- *  it will include the class if it can.
- *
- * @param string $class_name       The name of the class we want to include.
- */
-function __autoload($class_name) {
-    include dirname(__FILE__) . $class_name . '.php';
-}
-
-/**
  * A class that represents the concept of a car.
  *
  * The class inherits from the generic class, Vehicle
@@ -27,11 +17,18 @@ function __autoload($class_name) {
  */
 class Car extends Vehicle
 {
+    /** @var int Count the total number of cars we have */
     public static $car_count = 0;
 
-    //increment number of cars and call parent constructor to handle the rest
+    /** @var int The number of this car */
+    public $car_number;
+
+    /**
+     * Construct this car by setting its car number, increasing car count and
+     *   calling parent constructor to do generic Vehicle maintenance.
+     */
     function __construct() {
-        ++Car::$car_count;
+        $this->car_number = Car::$car_count++;
         parent::__construct();
     }
 
@@ -48,11 +45,34 @@ class Car extends Vehicle
 
     }
 
+    /**
+     * Start the car.
+     *
+     * Takes in a string that represents the key, hashes it with the salt and sees
+     *   if there is a match, if so engine is turned on and we indicate so.
+     *
+     * @param string $key   The 'key' to the car, which comes in the form of a password.
+     */
     public function start($key) {
-
+        if (hash('sha256', $key . $this->vehicle_salt) === $this->hashed_password ) {
+            echo "VROOM!!!! VROOM!!\n";
+            $this->engine_on = TRUE;
+            echo "Car started. \n";
+        }
+        else {
+            echo "FAILURE! Password mismatch in starting car number: {$this->car_number}";
+        }
     }
 
     public function stop() {
+
+    }
+
+    public function headlights_on() {
+
+    }
+
+    public function headlights_off() {
 
     }
 }
