@@ -42,19 +42,7 @@ class PickupTruck extends Car
     public function __construct($weight, $cap, $top_speed, $doors = 2) {
         echo PHP_EOL;
         //set car number and increase car count
-        $this->truck_number = PickupTruck::$pickuptruck_count++;
-
-        //set wheel numbers
-        $this->num_wheels = 4;
-
-        //set doors
-        $this->door_count = $doors;
-
-        //init $doors array
-        for ($i = 0; $i < $doors; $i++) {
-            //will use the door locations defined in the car class
-            $this->doors[$i] = new Door(Car::$door_locs[$i]);
-        }
+        $this->pickuptruck_number = PickupTruck::$pickuptruck_count++;
 
         echo "Created new PickupTruck, name: " . $this->name() . ", NUMBER: " . PickupTruck::$pickuptruck_count .  PHP_EOL;
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
@@ -133,7 +121,7 @@ class PickupTruck extends Car
     }
 
     /**
-     * Unload the truck
+     * Unload the truck. Print the contents in the process.
      */
     public function dropoff() {
         echo PHP_EOL;

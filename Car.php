@@ -44,13 +44,10 @@ class Car extends LandVehicle
      * @param int $top_speed        Maximum speed of vehicle
      * @param int $doors            Number of doors car has
      */
-    public function __construct($weight, $cap, $top_speed, $doors = 4 ) {
+    public function __construct($weight, $cap, $top_speed, $doors = 4) {
         echo PHP_EOL;
         //set car number and increase car count
         $this->car_number = Car::$car_count++;
-
-        //set wheel numbers
-        $this->num_wheels = 4;
 
         //set doors
         $this->door_count = $doors;

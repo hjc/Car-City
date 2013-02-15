@@ -25,20 +25,18 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
     /** @var int Count the total number of land vehicles we have */
     public static $land_count = 0;
 
-    /** @var int The number of wheels this vehicle has */
-    protected $num_wheels;
-
-    /** @var array Holds the pressures of all the tires in the vehicle */
-    protected $tire_pressures = [];
-
     /** @var int The number of this land vehicle */
     protected $landvehicle_number;
 
+    /** @var int The number of wheels this vehicle has */
+    protected $num_wheels;
+
+    /** @var array Holds the pressures of all the tires in the vehicle. All land vehicles
+     *             have tires, so include here */
+    protected $tire_pressures = [];
+
     /** @var bool Determines if land vehicle is in park, all vehicles start in park */
     protected $parked = TRUE;
-
-    /** @var bool determines if engine is on, starts off, turns on with start() */
-    protected $engine_on = FALSE;
 
     /**
      * Construct this Land Vehicle by setting its Land Vehicle number,
@@ -187,7 +185,7 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
      * Takes in a string that represents the key, hashes it with the salt and sees
      *   if there is a match, if so engine is turned on and we indicate so.
      *
-     * Deal with vehicles that have no keys set.
+     * Deals with vehicles that have no keys set.
      *
      * @param string $key   The 'key' to the car, which comes in the form of a password.
      */
@@ -203,7 +201,7 @@ Please make one by using the set_password command!" . PHP_EOL;
         }
 
         //had a password, see if it is right
-        if (hash('sha256', $key . $this->vehicle_salt) === $this->hashed_password ) {
+        if (hash('sha256', $key . $this->vehicle_salt) == $this->hashed_password ) {
 
             //was right, let everyone know
             $this->engine_on = TRUE;

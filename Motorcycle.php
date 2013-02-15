@@ -37,9 +37,6 @@ class Motorcycle extends LandVehicle
         echo PHP_EOL;
         $this->motorcycle_number = Motorcycle::$motorcycle_count++;
 
-        //setup wheel count
-        $this->num_wheels = 2;
-
         echo "Created new Motorcycle, name: " . $this->name() . ", NUMBER: " . Motorcycle::$motorcycle_count .  PHP_EOL;
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
             . "\tTop Speed: $top_speed" . PHP_EOL;
