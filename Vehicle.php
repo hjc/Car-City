@@ -161,6 +161,7 @@ abstract class Vehicle
 
     public function read_speed() {
         echo "STUB READ SPEED\n";
+        echo $this->current_speed;
     }
 
     public function read_direction() {
@@ -204,21 +205,75 @@ abstract class Vehicle
 
     /**
      * Increase the vehicle's speed by providing an acceleration rate (m/s^2) and
-     *  a duration (s).
+     *  a duration (s). Also going to pretend there is no friction.
      *
-     * @param float $rate          Acceleration rate, in m^2
-     * @param float $duration      Acceleration time, in s
+     * @param float $rate       Acceleration rate, in m^2
+     * @param float $duration   Acceleration time, in s
      */
-    abstract public function accelerate($rate, $duration);
+    public function accelerate($rate, $duration) {
+        //if $rate is negative, pass it off to decelerate
+        if ($rate < 0) {
+            $this->decelerate(abs($rate), $duration);
+            return;
+        }
+        echo PHP_EOL;
+
+        $speed_increase = $rate * $duration;
+
+        //tell us what's happening
+        echo $this->name()
+            . ": is accelerating by {$rate}m/s^2 for $duration seconds for a total speed increase of: {$speed_increase}m/s"
+            . PHP_EOL;
+
+        $this->current_speed += $speed_increase;
+    }
 
     /**
      * Decrease the vehicle's speed by providing an acceleration rate (m/s^2) and
-     *  a duration (s).
+     *  a duration (s). If the rate is negative, pass it to acceleration
+     * (negative deceleration == acceleration)
      *
      * @param float $rate          Acceleration rate, in m^2
      * @param float $duration      Acceleration time, in s
      */
-    abstract public function decelerate($rate, $duration);
+    public function decelerate($rate, $duration) {
+        //if $rate is negative, pass it off to accelerate
+        if ($rate < 0) {
+            $this->accelerate(abs($rate), $duration);
+            return;
+        }
+        echo PHP_EOL;
+
+        $speed_decrease = $rate * $duration;
+
+        //tell us what's happening
+        echo $this->name()
+            . ": is decelerating by {$rate}m/s^2 for $duration seconds for a total speed decrease of: {$speed_decrease}m/s"
+            . PHP_EOL;
+
+        $this->current_speed -= $speed_decrease;
+    }
+
+    /**
+     * Provide a method for a vehicle
+     *
+     * @param $speed
+     */
+    public function change_speed($speed) {
+        echo PHP_EOL;
+        echo $this->name() . ": is changing speed to $speed";
+
+        $diff = abs($this->current_speed - $speed);
+        $dura = 5;
+        $rate = $diff / $dura;
+
+        if ($speed > $this->current_speed) {
+            $this->accelerate($rate, $dura);
+        }
+        else {
+            $this->decelerate($rate, $dura);
+        }
+    }
 
     /**
      * Start the vehicle.

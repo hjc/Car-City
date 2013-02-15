@@ -50,7 +50,7 @@ abstract class LandVehicle extends Vehicle
     /**
      * All land vehicles have tires and tire pressure, this will simply print it.
      *
-     * Child classes will further explain which wheel is which and then call the
+     * Child classes will further explain which tire is which and then call the
      *   parent method.
      */
     function check_tire_pressure() {
@@ -81,32 +81,46 @@ abstract class LandVehicle extends Vehicle
         }
     }
 
-    /**
-     * Raise the land vehicle's speed by a constant acceleration rate for a
-     *   duration.
+
+
+    //this will essentially be a wrapper to: $this->change_speed(0)
+    // this is included in the LandVehicles section because other vehicle types
+    // (i.e. Sea, Air) do not have brakes. This makes a common term for stopping
+    // a car available to the class
+    public function brake() {
+        //wrapper for decel_to 0
+    }
+
+    /*
+     * for cars,
+     * need doors, count and array[count] of TF to indicate open or closed
+     * door status, list number of doors, location (driver, passenger, back driver), locked, open
+     * need to lock and unlock doors
+     * need to open doors, check if they are locked first
      *
-     * @param float $rate       How fast we are accelerating, m/s^2
-     * @param float $duration   How long we will accelerate for
+     * for trucks,
+     * need to lower beds
      */
-    public function accelerate($rate, $duration) {
-        $this->current_speed = $rate * $duration;
+
+    //like above, only LandVehicles and AirVehicles can park, do not add to Vehicle
+    public function is_parked() {
+
     }
 
     /**
-     * Also provide a method where we can just pass in a speed and
-     *
-     * @param int $speed
+     * Simple function to park the vehicle, will slow it down to 0 beforehand
+     *   if it needs to. Then changes the parked flag
      */
-    public function accelerate_to($speed) {
-        echo "stub accel";
-    }
+    public function park() {
+        echo PHP_EOL;
+        echo $this->name() . ": is parking!" . PHP_EOL;
+        //we should really slow down and stop before we park
+        if ($this->current_speed > 0) {
+            $this->decelerate_to(0);
+        }
 
-    public function decelerate($rate, $duration) {
-        echo "stub decel";
-    }
-
-    public function  decelerate_to($speed) {
-        echo "sub decel_to\n";
+        $this->parked = TRUE;
+        echo $this->name() . ": has parked!" . PHP_EOL;
     }
 
     /**

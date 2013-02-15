@@ -39,7 +39,7 @@ $cycle->check_tire_pressure();
 $cycle->check_wipers();
 $cycle->accelerate(25, 4);
 $cycle->read_speed();
-$cycle->accelerate_to(1000);
+$cycle->change_speed(1000);
 $cycle->read_speed();
 $cycle->turn_left(180);
 $cycle->read_direction();
@@ -51,7 +51,8 @@ $cycle->turn_right(270.4);
 $cycle->read_direction();
 $cycle->decelerate(25, 4);
 $cycle->read_speed();
-$cycle->decelerate_to(0);
+$cycle->change_speed(0);
+$cycle->read_speed();
 
 
 
@@ -63,5 +64,5 @@ $cycle->headlights_off();
 
 //echo $a->motorcycle_number, $a->vehicle_number;
 
-echo '<br>';
+echo PHP_EOL . 'END';
 
