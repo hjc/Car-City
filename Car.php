@@ -24,7 +24,7 @@
      * need to lower beds
      */
 use VehicleParts\Door;
-class Car extends LandVehicle implements \Steering\iSteeringWheel
+class Car extends LandVehicle /*implements \Steering\iSteeringWheel*/
 {
     /** @var int the number of cars we have created */
     public static $car_count;
