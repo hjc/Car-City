@@ -86,7 +86,7 @@ abstract class Vehicle
         $this->weight = $weight;
         $this->capacity = $cap;
 
-        echo "Created new Vehicle" . PHP_EOL;
+        echo "Created new Vehicle, NUMBER: " . Vehicle::$vehicle_count . PHP_EOL;
     }
 
     /**
@@ -108,12 +108,12 @@ abstract class Vehicle
     }
 
     /**
-     * Since all methods are annotated, they all contain echoes, most begin with
+     * Since all methods are annotated, they all contain echoes, most begin
      *   are like this:
      *     objectName: action!
      *   This gets old to write, simple wrapper, have the option to suppress newlines
      *
-     * @param $str              The action we're going to print.
+     * @param string $str              The action we're going to print.
      * @param bool $eol|TRUE    Determines if we should print the EOL after this action.
      */
     protected  function action($str, $eol = TRUE) {
@@ -204,7 +204,7 @@ abstract class Vehicle
      *  method so child classes do not need to know how to manipulate direction
      *  in order to use.
      *
-     * @param float $deg
+     * @param float $deg        The amount of degrees we want to turn to the left
      */
     protected function left($deg) {
         $this->direction -= $deg;
@@ -219,7 +219,7 @@ abstract class Vehicle
     /**
      * See above
      *
-     * @param float $deg
+     * @param float $deg        The amount of degrees we want to turn to the right
      */
     protected function right($deg) {
         $this->direction += $deg;
@@ -241,6 +241,7 @@ abstract class Vehicle
      */
     function set_password($string) {
         echo PHP_EOL;
+        $this->action("setting new password of: $string");
         $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
         $this->action("successfully set new password");
     }
@@ -304,16 +305,53 @@ abstract class Vehicle
         $this->action($this->lights_on ? "headlights are on" : "headlights are off");
     }
 
-    public function read_speed() {
+    /**
+     * Get the current speed of this vehicle
+     */
+    public function get_speed() {
         echo PHP_EOL;
-        echo "STUB READ SPEED\n";
-        echo $this->current_speed;
+        $this->action("checking current speed");
+        $this->action("current speed is: {$this->current_speed}");
     }
 
-    public function read_direction() {
+    /**
+     * Get the current direction of this vehicle
+     */
+    public function get_direction() {
         echo PHP_EOL;
         echo $this->direction;
         echo "STUB READ DIREC\n";
+        $this->action("checking current direction");
+        if ($this->direction == 0) {
+            $this->action("is facing true north");
+        }
+        else {
+            $this->action("is facing {$this->direction}° clockwise from true north");
+            if ($this->direction < 90) {
+                $this->action("is facing north east");
+            }
+            elseif ($this->direction == 90) {
+                $this->action("is facing east");
+            }
+            elseif ($this->direction < 180) {
+                $this->action("is facing south east");
+            }
+            elseif ($this->direction == 180) {
+                $this->action("is facing south");
+            }
+            elseif ($this->direction < 270) {
+                $this->action("is facing south west");
+            }
+            elseif ($this->direction == 270) {
+                $this->action("is facing west");
+            }
+            else {
+                //direction must be greater than 270. 360 resets the direction
+                // back to zero, so first if will catch it, thus we are facing NW
+                $this->action("is facing north west");
+            }
+        }
+        //xdegrees clockwise from north
 
     }
 
