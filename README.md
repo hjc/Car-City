@@ -7,4 +7,5 @@ To run this code, you can run each objects `test()` function (every object that 
  just run index.php in your console and it will run tests for a motorcycle, car, and truck.
 
 By: Hayden Chudy
+
 For: CROSCON Code Interview
