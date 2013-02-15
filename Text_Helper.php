@@ -8,7 +8,7 @@
  */
 
 /**
- * A simple to trait to do some basic text tasks.
+ * A simple trait to do some basic text tasks.
  *
  * They include:
  * - Generate random letters

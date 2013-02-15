@@ -22,13 +22,16 @@ abstract class LandVehicle extends Vehicle
     public static $land_count = 0;
 
     /** @var int The number of this land vehicle */
-    public $landvehicle_number;
+    protected $landvehicle_number;
 
     /** @var int The number of wheels this vehicle has */
     public $wheel_count;
 
-    /** @var array holds the pressures of all the tires in the vehicle */
+    /** @var array Holds the pressures of all the tires in the vehicle */
     public $tire_pressures = [];
+
+    /** @var bool Determines if land vehicle is in park, all vehicles start in park */
+    protected $parked = TRUE;
 
     /**
      * Construct this Land Vehicle by setting its Land Vehicle number,

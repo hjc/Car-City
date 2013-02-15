@@ -13,10 +13,12 @@ class Motorcycle extends LandVehicle
     public static $motorcycle_count = 0;
 
     /** @var int The individual number of this motorcycle */
-    public $motorcycle_number;
+    protected $motorcycle_number;
+
     /**
-     * Construct this car by setting its car number, increasing car count and
-     *   calling parent constructor to do generic Vehicle maintenance.
+     * Construct this motorcycle by setting its motorcycle number, increasing
+     *   motorcycle count and calling parent constructor to do generic Vehicle
+     *   maintenance.
      *
      * @param int $weight       The weight of the vehicle, in lbs.
      * @param int $top_speed     The max number of people the vehicle can hold
@@ -24,9 +26,12 @@ class Motorcycle extends LandVehicle
     function __construct($weight, $top_speed) {
         $this->motorcycle_number = Motorcycle::$motorcycle_count++;
 
-        //setup wheel count
+        //setup wheel count and read tire pressures
         $this->wheel_count = 2;
         $this->read_tire_pressure();
+
+        //set top speed
+        $this->top_speed = $top_speed;
         echo "Created new Motorcycle";
 
         //$cap = 1; only one person can safely ride in a motorcycle

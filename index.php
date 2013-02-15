@@ -23,7 +23,7 @@ $a->set_password('abc');
 $a->start('cde');
 $a->start('abc');
 
-echo $a->motorcycle_number, $a->vehicle_number;
+//echo $a->motorcycle_number, $a->vehicle_number;
 
 echo '<br>';
 $a->check_tire_pressure();

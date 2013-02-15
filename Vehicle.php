@@ -31,7 +31,7 @@ abstract class Vehicle
     public static $vehicle_count = 0;
 
     /** @var int The individual number of this vehicle */
-    public $vehicle_number = 0;
+    protected $vehicle_number = 0;
 
     /** @var int Holds vehicle's current speed */
     public $current_speed = 0;
@@ -81,7 +81,8 @@ abstract class Vehicle
         echo "Created new Vehicle\n";
     }
 
-    protected  function name() {
+    //TODO: Implement a vehicle number function
+    protected function name() {
         $class = get_class($this);
 
         $count_name = strtolower($class) . '_number';
