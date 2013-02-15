@@ -10,6 +10,9 @@
 /**
  * A class that represents the very basic concept of a Vehicle.
  *
+ * NOTE: I normally do not use this much string interpolation, due to security,
+ *   but I have forgone that for ease.
+ *
  * Is an abstract class defining generic functions that all vehicles share:
  * - Start
  * - Stop
@@ -86,88 +89,113 @@ abstract class Vehicle
         echo "Created new Vehicle" . PHP_EOL;
     }
 
-    //TODO: Implement a vehicle number function
-    //TODO: Implement a get heading direction
-
+    /**
+     * Simple function to format an object into a proper name using some generic
+     *   methods.
+     *
+     * @return string   Formatted name of this object
+     */
     protected function name() {
+        //get the current class name
         $class = get_class($this);
 
+        //the vehicle number for every vehicle type is stored like: class_number,
+        // i.e. motorcycle_number. Create a var so we can access that
         $count_name = strtolower($class) . '_number';
+
+        //use our var, get our number and class
         return $class . "#" . $this->$count_name;
     }
 
-
     /**
-     * Set and store a password in a vehicle for later use. This serves as a key for
-     *  a vehicle;
+     * Since all methods are annotated, they all contain echoes, most begin with
+     *   are like this:
+     *     objectName: action!
+     *   This gets old to write, simple wrapper, have the option to suppress newlines
      *
-     * @param string $string    The string that we are going to hash and store. This becomes the vehicle's
-     *                          password/key and is used to "activate" it
+     * @param $str              The action we're going to print.
+     * @param bool $eol|TRUE    Determines if we should print the EOL after this action.
      */
-    function set_password($string) {
-        echo "Successfully set new password for vehicle: " . $this->name() . PHP_EOL;
-        $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
+    protected  function action($str, $eol = TRUE) {
+        echo $this->name() . ": " . $str . "!";
+        echo $eol ? PHP_EOL : "";
     }
 
     /**
-     * Turn the vehicle's windshield wipers on and say so
+     * Increase the vehicle's speed by providing an acceleration rate (m/s^2) and
+     *  a duration (s). Also going to pretend there is no friction.
+     *
+     * @param float $rate       Acceleration rate, in m^2
+     * @param float $duration   Acceleration time, in s
      */
-    public function wipers_on() {
-        $this->wipers_on = TRUE;
-        echo get_class($this) . " turning windshield wipers on!" . PHP_EOL;
+    public function accelerate($rate, $duration) {
+        //if $rate is negative, pass it off to decelerate
+        if ($rate < 0) {
+            $this->decelerate(abs($rate), $duration);
+            return;
+        }
+        echo PHP_EOL;
+
+        $speed_increase = $rate * $duration;
+
+        //tell us what's happening
+        $this->action(
+            "is accelerating by {$rate}m/s^2 for $duration seconds for a total speed increase of: {$speed_increase}m/s"
+        );
+
+        $this->current_speed += $speed_increase;
     }
 
     /**
-     * Turn the vehicle's windshield wipers off and say so
+     * Decrease the vehicle's speed by providing an acceleration rate (m/s^2) and
+     *  a duration (s). If the rate is negative, pass it to acceleration
+     * (negative deceleration == acceleration)
+     *
+     * @param float $rate          Acceleration rate, in m^2
+     * @param float $duration      Acceleration time, in s
      */
-    public function wipers_off() {
-        $this->wipers_on = FALSE;
-        $class = get_class($this);
+    public function decelerate($rate, $duration) {
+        //if $rate is negative, pass it off to accelerate
+        if ($rate < 0) {
+            $this->accelerate(abs($rate), $duration);
+            return;
+        }
+        echo PHP_EOL;
 
-        $count_name = strtolower($class) . '_number';
-        echo '<br>' . $count_name . '<br>';
-        echo $class . "#" . $this->$count_name . " turning windshield wipers off!" . PHP_EOL;
+        $speed_decrease = $rate * $duration;
+
+        //tell us what's happening
+        $this->action(
+            "is decelerating by {$rate}m/s^2 for $duration seconds for a total speed decrease of: {$speed_decrease}m/s"
+        );
+
+        $this->current_speed -= $speed_decrease;
     }
 
     /**
-     * Simple function to see if the windshield wipers are on
+     * Provide a method for a vehicle to change its speed to one passed in, will
+     *   still accelerate or decelerate though because we can't just magically
+     *   change speed.
+     *
+     * @param float $speed
      */
-    public function check_wipers() {
-        echo $this->wipers_on ? "Windshield wipers are on!" . PHP_EOL : "Windshield wipers are off!" . PHP_EOL;
-    }
+    public function change_speed($speed) {
+        echo PHP_EOL;
+        $this->action("is changing speed to $speed");
 
-    /**
-     * Turn the vehicle's headlights off
-     */
-    public function headlights_off() {
-        $this->lights_on = FALSE;
-        echo get_class($this) . " turning headlights off!" . PHP_EOL;
-    }
+        //get difference in desired and current speed, use it to get rate, we
+        // will always use a duration of 5 seconds.
+        $diff = abs($this->current_speed - $speed);
+        $dura = 5;
+        $rate = $diff / $dura;
 
-    /**
-     * Turn the vehicle's headlights on
-     */
-    public function headlights_on() {
-        $this->lights_on = TRUE;
-        echo get_class($this) . " turning headlights on!" . PHP_EOL;
-    }
-
-    /**
-     * Simple function to see if the vehicle's headlights are on
-     */
-    public function check_headlights() {
-        echo $this->lights_on ? "Headlights are on!" . PHP_EOL : "Headlights are off!" . PHP_EOL;
-    }
-
-    public function read_speed() {
-        echo "STUB READ SPEED\n";
-        echo $this->current_speed;
-    }
-
-    public function read_direction() {
-        echo $this->direction;
-        echo "STUB READ DIREC\n";
-
+        //figure out if we're acceling or deceling
+        if ($speed > $this->current_speed) {
+            $this->accelerate($rate, $dura);
+        }
+        else {
+            $this->decelerate($rate, $dura);
+        }
     }
 
     /**
@@ -203,76 +231,90 @@ abstract class Vehicle
         }
     }
 
+
     /**
-     * Increase the vehicle's speed by providing an acceleration rate (m/s^2) and
-     *  a duration (s). Also going to pretend there is no friction.
+     * Set and store a password in a vehicle for later use. This serves as a key for
+     *  a vehicle;
      *
-     * @param float $rate       Acceleration rate, in m^2
-     * @param float $duration   Acceleration time, in s
+     * @param string $string    The string that we are going to hash and store. This becomes the vehicle's
+     *                          password/key and is used to "activate" it
      */
-    public function accelerate($rate, $duration) {
-        //if $rate is negative, pass it off to decelerate
-        if ($rate < 0) {
-            $this->decelerate(abs($rate), $duration);
-            return;
-        }
+    function set_password($string) {
         echo PHP_EOL;
-
-        $speed_increase = $rate * $duration;
-
-        //tell us what's happening
-        echo $this->name()
-            . ": is accelerating by {$rate}m/s^2 for $duration seconds for a total speed increase of: {$speed_increase}m/s"
-            . PHP_EOL;
-
-        $this->current_speed += $speed_increase;
+        $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
+        $this->action("successfully set new password");
     }
 
     /**
-     * Decrease the vehicle's speed by providing an acceleration rate (m/s^2) and
-     *  a duration (s). If the rate is negative, pass it to acceleration
-     * (negative deceleration == acceleration)
-     *
-     * @param float $rate          Acceleration rate, in m^2
-     * @param float $duration      Acceleration time, in s
+     * Turn the vehicle's windshield wipers on and say so
      */
-    public function decelerate($rate, $duration) {
-        //if $rate is negative, pass it off to accelerate
-        if ($rate < 0) {
-            $this->accelerate(abs($rate), $duration);
-            return;
-        }
+    public function wipers_on() {
         echo PHP_EOL;
-
-        $speed_decrease = $rate * $duration;
-
-        //tell us what's happening
-        echo $this->name()
-            . ": is decelerating by {$rate}m/s^2 for $duration seconds for a total speed decrease of: {$speed_decrease}m/s"
-            . PHP_EOL;
-
-        $this->current_speed -= $speed_decrease;
+        $this->action("turning windshield wipers on");
+        $this->wipers_on = TRUE;
+        $this->action("windshield wipers are on");
     }
 
     /**
-     * Provide a method for a vehicle
-     *
-     * @param $speed
+     * Turn the vehicle's windshield wipers off and say so
      */
-    public function change_speed($speed) {
+    public function wipers_off() {
         echo PHP_EOL;
-        echo $this->name() . ": is changing speed to $speed";
+        $this->action("turning windshield wipers off");
+        $this->wipers_on = FALSE;
+        $this->action("windshield wipers are off");
+    }
 
-        $diff = abs($this->current_speed - $speed);
-        $dura = 5;
-        $rate = $diff / $dura;
+    /**
+     * Simple function to see if the windshield wipers are on
+     */
+    public function check_wipers() {
+        echo PHP_EOL;
+        $this->action("checking wipers");
+        $this->action($this->wipers_on ? "windshield wipers are on" : "windshield wipers are off");
+    }
 
-        if ($speed > $this->current_speed) {
-            $this->accelerate($rate, $dura);
-        }
-        else {
-            $this->decelerate($rate, $dura);
-        }
+    /**
+     * Turn the vehicle's headlights off
+     */
+    public function headlights_off() {
+        echo PHP_EOL;
+        $this->action("turning headlights off");
+        $this->lights_on = FALSE;
+        $this->action("headlights are off");
+
+    }
+
+    /**
+     * Turn the vehicle's headlights on
+     */
+    public function headlights_on() {
+        echo PHP_EOL;
+        $this->action("turning headlights on");
+        $this->lights_on = TRUE;
+        $this->action("headlights are on");
+    }
+
+    /**
+     * Simple function to see if the vehicle's headlights are on
+     */
+    public function check_headlights() {
+        echo PHP_EOL;
+        $this->action("checking headlights");
+        $this->action($this->lights_on ? "headlights are on" : "headlights are off");
+    }
+
+    public function read_speed() {
+        echo PHP_EOL;
+        echo "STUB READ SPEED\n";
+        echo $this->current_speed;
+    }
+
+    public function read_direction() {
+        echo PHP_EOL;
+        echo $this->direction;
+        echo "STUB READ DIREC\n";
+
     }
 
     /**

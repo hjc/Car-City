@@ -28,11 +28,11 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
         $this->motorcycle_number = Motorcycle::$motorcycle_count++;
 
         //setup wheel count
-        $this->wheel_count = 2;
+        $this->num_wheels = 2;
 
         //set top speed
         $this->top_speed = $top_speed;
-        echo "Created new Motorcycle, name: " . $this->name() . PHP_EOL;
+        echo "Created new Motorcycle, name: " . $this->name() . ", NUMBER: " . Motorcycle::$motorcycle_count .  PHP_EOL;
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
             . "\tTop Speed: $top_speed" . PHP_EOL;
 
@@ -46,7 +46,7 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
      */
     public function check_tire_pressure() {
         echo PHP_EOL;
-        echo $this->name() . " checking tire pressure" . PHP_EOL;;
+        $this->action("checking tire pressure");
         echo "Tire 1 is the front tire." . PHP_EOL . "Tire 2 is the back tire." . PHP_EOL;
         parent::check_tire_pressure();
     }
@@ -60,8 +60,9 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
      */
     public function headlights_off() {
         echo PHP_EOL;
+        $this->action("Turning Headlight off");
         $this->lights_on = FALSE;
-        echo $this->name() . ": Turning Headlight off" . PHP_EOL;
+        $this->action("Headlight is off");
     }
 
     /**
@@ -69,8 +70,9 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
      */
     public function headlights_on() {
         echo PHP_EOL;
+        $this->action("Turning Headlight on");
         $this->lights_on = TRUE;
-        echo $this->name() . ": Turning Headlight on" . PHP_EOL;
+        $this->action("Headlight is on");
     }
 
     /**
@@ -85,7 +87,7 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
      */
     public function turn_left($deg) {
         echo PHP_EOL;
-        echo $this->name() . " is turning left by $deg degrees in total" . PHP_EOL;
+        $this->action("is turning left by $deg degrees in total");
         //in reality a motorcycle cannot just make a 180 degree turn, it has to
         // be two 90 degree turns (albeit quick ones most of the time). The handles
         // only turn 90 degrees at most. So do multiple turns (equivalent to just
@@ -119,7 +121,7 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
      */
     public function turn_right($deg) {
         echo PHP_EOL;
-        echo $this->name() . " is turning right by $deg degrees in total" . PHP_EOL;
+        $this->action("is turning right by $deg degrees in total");
         //in reality a motorcycle cannot just make a 180 degree turn, it has to
         // be two 90 degree turns (albeit quick ones most of the time). The handles
         // only turn 90 degrees at most. So do multiple turns (equivalent to just
@@ -144,7 +146,7 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
     /** stub method to represent resetting the handlebars */
     public function rotate_reset() {
         echo PHP_EOL;
-        echo $this->name() . ": Resetting the handlebars to original position!" . PHP_EOL;
+        $this->action("Resetting the handlebars to original position");
     }
 }
 

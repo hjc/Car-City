@@ -28,9 +28,11 @@ ini_set('display_errors', '1');
  */
 $cycle = new Motorcycle(115, 125);
 //echo LandVehicle::$land_count;
+$cycle->wheel_count();
 $cycle->start('abc');
 $key = '1234ac';
 $cycle->set_password($key);
+$cycle->start("abc");
 $cycle->start($key);
 $cycle->check_headlights();
 $cycle->headlights_on();
@@ -53,6 +55,15 @@ $cycle->decelerate(25, 4);
 $cycle->read_speed();
 $cycle->change_speed(0);
 $cycle->read_speed();
+
+$cycle->is_parked();
+$cycle->park();
+$cycle->is_parked();
+$cycle->accelerate(100, 15);
+$cycle->park();
+$cycle->is_parked();
+$cycle->accelerate(50, 2);
+$cycle->stop();
 
 
 
