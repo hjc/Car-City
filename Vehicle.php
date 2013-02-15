@@ -56,10 +56,15 @@ abstract class Vehicle
     protected $hashed_password;
 
     /** @var bool Are the headlights on? */
-    protected $headlights_on = FALSE;
+    protected $lights_on = FALSE;
 
     /** @var bool Are the windshield wipers on? */
     protected $wipers_on = FALSE;
+
+    /** @var float Indicates the direction this vehicle is facing, 0 degrees is true
+     *              North, positive values move the direction to the right of true North,
+     *              negative go left  */
+    protected $direction = 0.0;
 
     /**
      * Construct the object, increasing vehicle count, making a future salt, and
@@ -82,6 +87,8 @@ abstract class Vehicle
     }
 
     //TODO: Implement a vehicle number function
+    //TODO: Implement a get heading direction
+
     protected function name() {
         $class = get_class($this);
 
@@ -121,24 +128,55 @@ abstract class Vehicle
         echo $class . "#" . $this->$count_name . " turning windshield wipers off!\n";
     }
 
+    /**
+     * Simple function to see if the windshield wipers are on
+     */
     public function check_wipers() {
-        //echo $this->wipers_on ?
+        echo $this->wipers_on ? "Windshield wipers are on! \n" : "Windshield wipers are off!\n";
     }
 
     /**
      * Turn the vehicle's headlights off
      */
-    function headlights_off() {
-        $this->headlights_on = FALSE;
+    public function headlights_off() {
+        $this->lights_on = FALSE;
         echo get_class($this) . " turning headlights off!\n";
     }
 
     /**
      * Turn the vehicle's headlights on
      */
-    function headlights_on() {
-        $this->headlights_on = TRUE;
+    public function headlights_on() {
+        $this->lights_on = TRUE;
         echo get_class($this) . " turning headlights on!\n";
+    }
+
+    /**
+     * Simple function to see if the vehicle's headlights are on
+     */
+    public function check_headlights() {
+        echo $this->lights_on ? "Headlights are on! \n" : "Headlights are off!\n";
+    }
+
+    /**
+     * Very simple function that will make changes to the direction variable that
+     *  correspond to the vehicle moving to the left. We will implement it as a
+     *  method so child classes do not need to know how to manipulate direction
+     *  in order to use.
+     *
+     * @param float $deg
+     */
+    protected function left($deg) {
+        $this->direction -= $deg;
+    }
+
+    /**
+     * See above
+     *
+     * @param float $deg
+     */
+    protected function right($deg) {
+        $this->direction += $deg;
     }
 
     /**

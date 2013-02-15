@@ -16,6 +16,7 @@
  * @subpackage  iHandleBars
  * @author      Hayden Chudy <hjc1710@gmail.com>
  */
+namespace Steering;
 interface iHandleBars
 {
     /**
@@ -35,4 +36,17 @@ interface iHandleBars
      * @return mixed
      */
     public function turn_right($deg);
+
+    /**
+     * Rotate the handlebars back into their default, straight position.
+     *
+     * Named for compatibility with iSteeringWheel, this function should never
+     *  be called outside the turn functions. Ideally it should be private, but
+     *  that's illegal in an interface and making this an abstract method for a
+     *  LandVehicle (only way to force private visibility implementation) just
+     *  seems a little too odd.
+     *
+     * @return mixed
+     */
+    public function rotate_reset();
 }

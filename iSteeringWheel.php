@@ -22,6 +22,7 @@
  * @subpackage  iSteeringWheel
  * @author      Hayden Chudy <hjc1710@gmail.com>
  */
+namespace Steering;
 interface iSteeringWheel
 {
     /**
@@ -43,6 +44,18 @@ interface iSteeringWheel
      * @return mixed
      */
     public function rotate_left($deg);
+
+    /**
+     * Resets the steering wheel to its default, straight position
+     *
+     * This function should never be called outside the turn functions. Ideally
+     *  it should be private, but that's illegal in an interface and making
+     *  this an abstract method for a LandVehicle (only way to force implementation
+     *  of a method with private visibility) just seems a little too odd.
+     *
+     * @return mixed
+     */
+    public function rotate_reset();
 
     /**
      * Should just echo a string that indicates some sort of honk

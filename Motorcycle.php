@@ -7,7 +7,7 @@
  * To change this template use File | Settings | File Templates.
  */
 
-class Motorcycle extends LandVehicle
+class Motorcycle extends LandVehicle implements Steering\iHandleBars
 {
     /** @var int Keep track of how many motorcycles we have */
     public static $motorcycle_count = 0;
@@ -41,7 +41,7 @@ class Motorcycle extends LandVehicle
     /**
      * Explain your tire setup, call parent method to print.
      */
-    function check_tire_pressure() {
+    public function check_tire_pressure() {
         echo "Tire 1 is the front tire.\nTire 2 is the back tire.";
         parent::check_tire_pressure();
     }
@@ -58,16 +58,86 @@ class Motorcycle extends LandVehicle
     /**
      * Turns off the motorcycle's headlight and says so
      */
-    function headlights_off() {
-        $this->headlights_on = FALSE;
+    public function headlights_off() {
+        $this->lights_on = FALSE;
         echo "Turning Motorcycle Headlight off";
     }
 
     /**
      * Turns on the motorcycle's headlight and says so
      */
-    function headlights_on() {
-        $this->headlights_on = TRUE;
+    public function headlights_on() {
+        $this->lights_on = TRUE;
         echo "Turning Motorcycle Headlight on";
     }
+
+    /**
+     * This function takes in a number of degrees the motorcycle wants to turn left
+     *   by and changes the motorcycle's direction to match that. Due to the physical
+     *   limitation of a motorcycle (handlebars only rotate 90° at most), we will
+     *   simulate "multiple" turns, or just one big turn, if the turn is greater
+     *   than 90°
+     *
+     * @param float $deg
+     * @return mixed|void
+     */
+    public function turn_left($deg) {
+        //in reality a motorcycle cannot just make a 180 degree turn, it has to
+        // be two 90 degree turns (albeit quick ones most of the time). The handles
+        // only turn 90 degrees at most. So do multiple turns (equivalent to just
+        // holding the handlebars left)
+        $i = 0;
+        while ($deg > 90) {
+            //actually change direction and turn left
+            echo "Turn #" . $i + 1 . ": turning right by 90°";
+            $this->left(90);
+            $deg -= 90;
+            $i++;
+        }
+
+        //again, change direction and turn left
+        echo "Turn #" . $i + 1 . ": turning right by {$deg}°";
+        $this->left($deg);
+
+        //reset handlebars to original positions
+        $this->rotate_reset();
+    }
+
+    /**
+     * This function takes in a number of degrees the motorcycle wants to turn right
+     *   by and changes the motorcycle's direction to match that. Due to the physical
+     *   limitation of a motorcycle (handlebars only rotate 90° at most), we will
+     *   simulate "multiple" turns, or just one big turn, if the turn is greater
+     *   than 90°
+     *
+     * @param float $deg
+     * @return mixed|void
+     */
+    public function turn_right($deg) {
+        //in reality a motorcycle cannot just make a 180 degree turn, it has to
+        // be two 90 degree turns (albeit quick ones most of the time). The handles
+        // only turn 90 degrees at most. So do multiple turns (equivalent to just
+        // holding the handlebars left)
+        $i = 0;
+        while ($deg > 90) {
+            echo "Turn #" . $i + 1 . ": turning right by 90°";
+            //actually change direction and turn left
+            $this->right(90);
+            $deg -= 90;
+            $i++;
+        }
+
+        //again, change direction and turn left
+        echo "Turn #" . $i + 1 . ": turning right by {$deg}°";
+        $this->right($deg);
+
+        //reset handlebars to original positions
+        $this->rotate_reset();
+    }
+
+    /** stub method to represent reseting the handlebars */
+    public function rotate_reset() {
+        echo "Resetting the handlebars to original position!\n";
+    }
 }
+
