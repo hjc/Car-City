@@ -37,6 +37,7 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
     /** @var bool Determines if land vehicle is in park, all vehicles start in park */
     protected $parked = TRUE;
 
+    /** @var bool determines if engine is on, starts off, turns on with start() */
     protected $engine_on = FALSE;
 
     /**
@@ -44,8 +45,10 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
      *   increasing Land Vehicle count and calling parent constructor
      *   to do generic Vehicle maintenance.
      *
-     * @param int $weight       The weight of the vehicle, in lbs.
-     * @param int $cap     The max number of people the vehicle can hold
+     * @param int $weight           The weight of the vehicle, in lbs.
+     * @param int $cap              The max number of people the vehicle can hold
+     * @param null|int $top_speed   Vehicle top speed
+     * @param int $num_wheels       Number of wheels vehicle has
      */
     public function __construct($weight, $cap, $top_speed = NULL, $num_wheels = 2) {
         $this->landvehicle_number = LandVehicle::$land_count++;
@@ -125,7 +128,7 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
     public function is_parked() {
         echo PHP_EOL;
         $this->action("checking parking");
-        $this->action("is" .( $this->parked ? " " : " not ") . "parked");
+        $this->action("is" . ( $this->parked ? " " : " not ") . "parked");
     }
 
     /**
@@ -251,5 +254,8 @@ Please make one by using the set_password command!" . PHP_EOL;
         $this->accelerate(100, 15);
         $this->park();
         $this->is_parked();
+
+        $this->stop();
+        $this->turn_left(45);
     }
 }

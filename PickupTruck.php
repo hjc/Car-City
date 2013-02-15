@@ -6,6 +6,15 @@
  * Time: 4:49 AM
  * To change this template use File | Settings | File Templates.
  */
+/**
+ * Simple class to implement the concept of a pickup truck. This is just an extended
+ *   car that has a bed with loading features, such as raising the tailgate and adding
+ *   items. Other than that it is identical to a car.
+ *
+ * @package     Vehicles
+ * @subpackage  PickupTruck
+ * @author      Hayden Chudy <hjc1710@gmail.com>
+ */
 use VehicleParts\Door;
 class PickupTruck extends Car
 {

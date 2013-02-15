@@ -6,30 +6,22 @@
  * Time: 2:17 AM
  * To change this template use File | Settings | File Templates.
  */
-/**
- * PHP Magic function that gets called every time an undefined class is referenced,
- *  it will include the class if it can.
- *
- * @param string $class_name       The name of the class we want to include.
- */
 
-/*
-     * for cars,
-     * need doors, count and array[count] of TF to indicate open or closed
-     * door status, list number of doors, location (driver, passenger, back driver), locked, open
-     * need to lock and unlock doors
-     * need to open doors, check if they are locked first
-     *
-     * for trucks,
-     * need to lower beds
-     */
+/**
+ * Simple implementation of a car. Provides door functionality in addition to
+ *   all the functionality it inherits from LandVehicle. Uses a generic mapping
+ *   method to call functions on all the doors.
+ *
+ * @package     Vehicles
+ * @subpackage  Car
+ * @author      Hayden Chudy <hjc1710@gmail.com>
+ */
 use VehicleParts\Door;
 class Car extends LandVehicle
 {
     use Steering\SteeringWheel;
     /** @var int the number of cars we have created */
     public static $car_count = 0;
-
 
     /** @var int the current number of this car */
     protected $car_number;
@@ -40,16 +32,16 @@ class Car extends LandVehicle
     /** @var array stores the states of our various doors, as Door objects */
     protected $doors;
 
-    /** @var array Some constant values used in door initialization to tell where the door is */
+    /** @var array Some constant values used in door initialization to tell where the door is on the car */
     protected static $door_locs = ['Driver', 'Passenger', 'Driver-Back', 'Passenger-Back'];
 
     /**
      * Construct our Car for us. Set its number, increase our car count, set the
      *   number of doors, initialize $doors array so all doors are closed
      *
-     * @param int $weight
+     * @param int $weight           Vehicle Weight
      * @param int $cap              Maximum capacity of vehicle
-     * @param int $top_speed
+     * @param int $top_speed        Maximum speed of vehicle
      * @param int $doors            Number of doors car has
      */
     public function __construct($weight, $cap, $top_speed, $doors = 4 ) {
@@ -72,6 +64,7 @@ class Car extends LandVehicle
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
             . "\tTop Speed: $top_speed" . PHP_EOL . "\tDoors: $doors (all closed and locked)" . PHP_EOL;
 
+        //have parents do the rest
         parent::__construct($weight, $cap, $top_speed, 4);
     }
 
@@ -142,7 +135,7 @@ class Car extends LandVehicle
      *
      * Delegates work to door_map
      *
-     * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
+     * @param int $door     Indicate which door we want to close, -1 is all, $door_count is max
      */
     public function close($door = -1) {
         $this->door_map("close", $door, "Closing");
@@ -157,7 +150,7 @@ class Car extends LandVehicle
      *
      * Delegates work to door_map
      *
-     * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
+     * @param int $door     Indicate which door we want to open, -1 is all, $door_count is max
      */
     public function open($door = -1) {
         $this->door_map("open", $door);

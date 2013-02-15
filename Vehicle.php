@@ -113,8 +113,8 @@ abstract class Vehicle
     }
 
     /**
-     * Since all methods are annotated, they all contain echoes, most begin
-     *   are like this:
+     * Since all methods are annotated, they all contain echoes, most are
+     *   like this:
      *     objectName: action!
      *   This gets old to write, simple wrapper, have the option to suppress newlines
      *
@@ -244,7 +244,7 @@ abstract class Vehicle
      * Very simple function that will make changes to the direction variable that
      *  correspond to the vehicle moving to the left. We will implement it as a
      *  method so child classes do not need to know how to manipulate direction
-     *  in order to use.
+     *  in order to use turns.
      *
      * We can check to see if the engine is on here instead of making child classes
      *   check in their turn code.
@@ -381,14 +381,19 @@ abstract class Vehicle
     public function get_direction() {
         echo PHP_EOL;
         $this->action("checking current direction");
+        //can easily display the degree, and will, but also do cardinal
+
+        //since North is direction's "origin", it occurs when $direction == 0
         if ($this->direction == 0) {
             $this->action("is facing true north");
         }
+        //other cases are easily handled as well
         else {
             $this->action("is facing {$this->direction}° clockwise from true north");
             if ($this->direction < 90) {
                 $this->action("is facing north east");
             }
+            //we rotate clockwise, this is east
             elseif ($this->direction == 90) {
                 $this->action("is facing east");
             }
@@ -410,8 +415,6 @@ abstract class Vehicle
                 $this->action("is facing north west");
             }
         }
-        //xdegrees clockwise from north
-
     }
 
     /**

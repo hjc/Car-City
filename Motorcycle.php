@@ -7,8 +7,17 @@
  * To change this template use File | Settings | File Templates.
  */
 
+/**
+ * Represents a motorcycle or other two-wheeled vehicle. Very similar to a car, but
+ *   no doors, meaning we need two separate classes
+ *
+ * @package     Vehicles
+ * @subpackage  Motorcycle
+ * @author      Hayden Chudy <hjc1710@gmail.com>
+ */
 class Motorcycle extends LandVehicle
 {
+    //include turn functions
     use Steering\HandleBars;
     /** @var int Keep track of how many motorcycles we have */
     public static $motorcycle_count = 0;

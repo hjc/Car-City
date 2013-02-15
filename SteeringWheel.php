@@ -11,6 +11,7 @@
  * A trait to describe driving a vehicle with a steering wheel. Has these
  *   methods:
  * - Honk horn, honks the horn.
+ * - Turn reset, indicates turn is over and returns steering wheel to default position
  * - Turn left, Rotate Left rotates the steering wheel, this is the function that should
  *   be called to actually turn the vehicle. It should call rotate_left
  * - Turn right, Rotate Right rotates the steering wheel, this is the function that should

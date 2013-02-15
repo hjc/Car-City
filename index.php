@@ -16,6 +16,8 @@ function __autoload($class_name) {
     include dirname(__FILE__) . '/' . $class_name . '.php';
 }
 
+//other than that, just run the tests
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
