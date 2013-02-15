@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 
 /**
@@ -19,18 +20,48 @@ error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
 
-echo "hi";
 
-$a = new Motorcycle(115, 125);
-echo LandVehicle::$land_count;
+/**
+ * MOTORCYCLE TEST SUITE!!
+ *
+ * Create some motorcycles and run them through their paces.
+ */
+$cycle = new Motorcycle(115, 125);
+//echo LandVehicle::$land_count;
+$cycle->start('abc');
+$key = '1234ac';
+$cycle->set_password($key);
+$cycle->start($key);
+$cycle->check_headlights();
+$cycle->headlights_on();
+$cycle->wipers_on();
+$cycle->check_tire_pressure();
+$cycle->check_wipers();
+$cycle->accelerate(25, 4);
+$cycle->read_speed();
+$cycle->accelerate_to(1000);
+$cycle->read_speed();
+$cycle->turn_left(180);
+$cycle->read_direction();
+$cycle->turn_right(360);
+$cycle->read_direction();
+$cycle->turn_left(90.4);
+$cycle->read_direction();
+$cycle->turn_right(270.4);
+$cycle->read_direction();
+$cycle->decelerate(25, 4);
+$cycle->read_speed();
+$cycle->decelerate_to(0);
 
-$a->set_password('abc');
-$a->start('cde');
-$a->start('abc');
+
+
+
+$cycle->check_headlights();
+$cycle->headlights_off();
+
+
 
 //echo $a->motorcycle_number, $a->vehicle_number;
 
 echo '<br>';
-$a->check_tire_pressure();
-$a->wipers_on();
-$a->wipers_off();
+

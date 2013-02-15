@@ -22,7 +22,7 @@ trait Text_Helper
      * @param int $amt      How many random letters we want
      * @return string       The random letters we asked for
      */
-    function random_letters($amt) {
+    public function random_letters($amt) {
         $st = '';
         for($i = 0; $i < $amt; $i++) {
             $st .= chr(97 + mt_rand(0, 25));
@@ -36,7 +36,7 @@ trait Text_Helper
      *
      * @return string The salt we want
      */
-    public function create_salt() {
+    protected  function create_salt() {
         date_default_timezone_set('America/Chicago');
         $dt = new DateTime();
         $salt = $this->random_letters(8);

@@ -43,7 +43,7 @@ abstract class LandVehicle extends Vehicle
      */
     function __construct($weight, $cap) {
         $this->landvehicle_number = LandVehicle::$land_count++;
-        echo "Created new Land Vehicle";
+        echo "Created new Land Vehicle" . PHP_EOL;
         parent::__construct($weight, $cap);
     }
 
@@ -54,9 +54,14 @@ abstract class LandVehicle extends Vehicle
      *   parent method.
      */
     function check_tire_pressure() {
-        for ($i = 0; $i < count($this->tire_pressures); ++$i) {
-            echo "Pressure in tire " . ($i + 1) . ": " . $this->tire_pressures[$i] . " psi\n";
+        //if tire pressure is empty, read it
+        if (empty($this->tire_pressures)) {
+            $this->read_tire_pressure();
         }
+        for ($i = 0; $i < count($this->tire_pressures); ++$i) {
+            echo "Pressure in tire " . ($i + 1) . ": " . $this->tire_pressures[$i] . " psi" . PHP_EOL;
+        }
+        echo PHP_EOL;
     }
 
     /**
@@ -66,8 +71,11 @@ abstract class LandVehicle extends Vehicle
      *
      * @see check_tire_pressure() to print the tire pressure
      */
-    //abstract public function read_tire_pressure();
     public function read_tire_pressure() {
+        echo $this->name() . " reading tire pressure" . PHP_EOL;
+
+        //since we know the number of tires each LandVehicle will have, this loop
+        // handles cars, motorcycles, tricycles, etc.
         for ($i = 0; $i < $this->wheel_count ; $i++) {
             $this->tire_pressures[$i] = rand(65, 115);
         }
@@ -90,12 +98,15 @@ abstract class LandVehicle extends Vehicle
      * @param int $speed
      */
     public function accelerate_to($speed) {
-
-
+        echo "stub accel";
     }
 
     public function decelerate($rate, $duration) {
+        echo "stub decel";
+    }
 
+    public function  decelerate_to($speed) {
+        echo "sub decel_to\n";
     }
 
     /**
@@ -104,20 +115,28 @@ abstract class LandVehicle extends Vehicle
      * Takes in a string that represents the key, hashes it with the salt and sees
      *   if there is a match, if so engine is turned on and we indicate so.
      *
+     * Deal with vehicles that have no keys set.
+     *
      * @param string $key   The 'key' to the car, which comes in the form of a password.
      */
     public function start($key) {
+        echo "Trying to start LandVehicle: " . $this->name() . " with key $key" . PHP_EOL;
+        if (!isset($this->hashed_password)) {
+            echo "This vehicle does not have a key!!
+Please make one by using the set_password command!" . PHP_EOL;
+            return;
+        }
         if (hash('sha256', $key . $this->vehicle_salt) === $this->hashed_password ) {
-            echo "VROOM!!!! VROOM!!\n";
+            echo "VROOM!!!! VROOM!!" . PHP_EOL;
             $this->engine_on = TRUE;
-            echo "LandVehicle started. \n";
+            echo "LandVehicle started." . PHP_EOL;
         }
         else {
-            echo "FAILURE! Password mismatch in starting car number: {$this->landvehicle_number}";
+            echo "FAILURE! Password mismatch in starting car number: {$this->landvehicle_number}" . PHP_EOL;
         }
     }
 
     public function stop() {
-
+        echo "STUB STOP";
     }
 }

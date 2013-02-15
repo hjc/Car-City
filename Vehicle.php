@@ -30,12 +30,6 @@ abstract class Vehicle
     /** @var int Contains total count of vehicles */
     public static $vehicle_count = 0;
 
-    /** @var int The individual number of this vehicle */
-    protected $vehicle_number = 0;
-
-    /** @var int Holds vehicle's current speed */
-    public $current_speed = 0;
-
     /** @var int Holds vehicle's top speed */
     public $top_speed;
 
@@ -44,6 +38,12 @@ abstract class Vehicle
 
     /** @var int How many people the vehicle can hold. */
     public $capacity;
+
+    /** @var int The individual number of this vehicle */
+    protected $vehicle_number = 0;
+
+    /** @var int Holds vehicle's current speed */
+    protected $current_speed = 0;
 
     /** @var bool Is the engine on? alternatively, is the car started? */
     protected $engine_on = FALSE;
@@ -83,7 +83,7 @@ abstract class Vehicle
         $this->weight = $weight;
         $this->capacity = $cap;
 
-        echo "Created new Vehicle\n";
+        echo "Created new Vehicle" . PHP_EOL;
     }
 
     //TODO: Implement a vehicle number function
@@ -105,6 +105,7 @@ abstract class Vehicle
      *                          password/key and is used to "activate" it
      */
     function set_password($string) {
+        echo "Successfully set new password for vehicle: " . $this->name() . PHP_EOL;
         $this->hashed_password = hash('sha256', $string . $this->vehicle_salt);
     }
 
@@ -113,7 +114,7 @@ abstract class Vehicle
      */
     public function wipers_on() {
         $this->wipers_on = TRUE;
-        echo get_class($this) . " turning windshield wipers on!\n";
+        echo get_class($this) . " turning windshield wipers on!" . PHP_EOL;
     }
 
     /**
@@ -125,14 +126,14 @@ abstract class Vehicle
 
         $count_name = strtolower($class) . '_number';
         echo '<br>' . $count_name . '<br>';
-        echo $class . "#" . $this->$count_name . " turning windshield wipers off!\n";
+        echo $class . "#" . $this->$count_name . " turning windshield wipers off!" . PHP_EOL;
     }
 
     /**
      * Simple function to see if the windshield wipers are on
      */
     public function check_wipers() {
-        echo $this->wipers_on ? "Windshield wipers are on! \n" : "Windshield wipers are off!\n";
+        echo $this->wipers_on ? "Windshield wipers are on!" . PHP_EOL : "Windshield wipers are off!" . PHP_EOL;
     }
 
     /**
@@ -140,7 +141,7 @@ abstract class Vehicle
      */
     public function headlights_off() {
         $this->lights_on = FALSE;
-        echo get_class($this) . " turning headlights off!\n";
+        echo get_class($this) . " turning headlights off!" . PHP_EOL;
     }
 
     /**
@@ -148,14 +149,24 @@ abstract class Vehicle
      */
     public function headlights_on() {
         $this->lights_on = TRUE;
-        echo get_class($this) . " turning headlights on!\n";
+        echo get_class($this) . " turning headlights on!" . PHP_EOL;
     }
 
     /**
      * Simple function to see if the vehicle's headlights are on
      */
     public function check_headlights() {
-        echo $this->lights_on ? "Headlights are on! \n" : "Headlights are off!\n";
+        echo $this->lights_on ? "Headlights are on!" . PHP_EOL : "Headlights are off!" . PHP_EOL;
+    }
+
+    public function read_speed() {
+        echo "STUB READ SPEED\n";
+    }
+
+    public function read_direction() {
+        echo $this->direction;
+        echo "STUB READ DIREC\n";
+
     }
 
     /**
@@ -168,6 +179,12 @@ abstract class Vehicle
      */
     protected function left($deg) {
         $this->direction -= $deg;
+
+        //keep the direction ranging between 0 and 360 so it's easy to figure out where we're
+        // facing
+        if ($this->direction < 0) {
+            $this->direction += 360;
+        }
     }
 
     /**
@@ -177,6 +194,12 @@ abstract class Vehicle
      */
     protected function right($deg) {
         $this->direction += $deg;
+
+        //keep the direction ranging between 0 and 360 so it's easy to figure out where we're
+        // facing
+        if ($this->direction >= 360) {
+            $this->direction -= 360;
+        }
     }
 
     /**
