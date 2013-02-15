@@ -10,7 +10,11 @@
  * A class that represents the concept of a general land vehicle, like a car or
  *   motorcycle.
  *
- * The class inherits from the generic class, Vehicle
+ * The class inherits from the generic class, Vehicle.
+ *
+ * Using this class as an intermediary between Cars and Motorcycles lets us easily
+ *   build SeaVehicles off the base Vehicle class, or AirVehicles, if the spec
+ *   calls for it later.
  *
  * @package     Vehicles
  * @subpackage  LandVehicle
@@ -43,7 +47,7 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
      * @param int $weight       The weight of the vehicle, in lbs.
      * @param int $cap     The max number of people the vehicle can hold
      */
-    public function __construct($weight, $cap, $num_wheels, $top_speed = NULL) {
+    public function __construct($weight, $cap, $top_speed = NULL, $num_wheels = 2) {
         $this->landvehicle_number = LandVehicle::$land_count++;
 
         //all LandVehicles have wheels, so we'll init here

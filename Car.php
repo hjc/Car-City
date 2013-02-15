@@ -29,7 +29,7 @@ class Car extends LandVehicle
     use Steering\SteeringWheel;
     /** @var int the number of cars we have created */
     public static $car_count = 0;
-    private static $door_locs = ['Driver', 'Passenger', 'Driver-Back', 'Passenger-Back'];
+
 
     /** @var int the current number of this car */
     protected $car_number;
@@ -40,15 +40,19 @@ class Car extends LandVehicle
     /** @var array stores the states of our various doors, as Door objects */
     protected $doors;
 
+    /** @var array Some constant values used in door initialization to tell where the door is */
+    protected static $door_locs = ['Driver', 'Passenger', 'Driver-Back', 'Passenger-Back'];
+
     /**
      * Construct our Car for us. Set its number, increase our car count, set the
      *   number of doors, initialize $doors array so all doors are closed
      *
      * @param int $weight
+     * @param int $cap              Maximum capacity of vehicle
      * @param int $top_speed
-     * @param int $doors
+     * @param int $doors            Number of doors car has
      */
-    public function __construct($weight, $top_speed, $doors = 4) {
+    public function __construct($weight, $cap, $top_speed, $doors = 4 ) {
         echo PHP_EOL;
         //set car number and increase car count
         $this->car_number = Car::$car_count++;
@@ -68,7 +72,7 @@ class Car extends LandVehicle
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
             . "\tTop Speed: $top_speed" . PHP_EOL . "\tDoors: $doors (all closed and locked)" . PHP_EOL;
 
-        parent::__construct($weight, 5, 4, $top_speed);
+        parent::__construct($weight, $cap, $top_speed, 4);
     }
 
     /**

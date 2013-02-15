@@ -37,7 +37,7 @@ class Motorcycle extends LandVehicle
 
         //$cap = 1; only one person can safely ride in a motorcycle, parent sets weight and
         // capacity
-        parent::__construct($weight, 1, 2, $top_speed);
+        parent::__construct($weight, 1, $top_speed, 2);
     }
 
     /**

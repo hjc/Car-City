@@ -16,8 +16,8 @@
  * Is an abstract class defining generic functions that all vehicles share:
  * - Start
  * - Stop
- * - Accelerate
- * - Decelerate
+ * - Accelerate - implements
+ * - Decelerate - implements
  *
  * Also implements a few persistent elements, namely a password and salt that,
  *  in theory, would replace the physical key.
@@ -73,8 +73,9 @@ abstract class Vehicle
      * Construct the object, increasing vehicle count, making a future salt, and
      *  setting the vehicle number.
      *
-     * @param int $weight       The weight of the vehicle, in lbs.
-     * @param int $cap     The max number of people the vehicle can hold
+     * @param int $weight           The weight of the vehicle, in lbs.
+     * @param int $cap              The max number of people the vehicle can hold
+     * @param int|NULL $top_speed   The fastest the vehicle can go
      */
     function __construct($weight, $cap, $top_speed = NULL) {
         //make a salt for this vehicle's password
