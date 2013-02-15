@@ -17,7 +17,7 @@ class Door
     private $locked = TRUE;
 
     /** @var bool tell us if door is open */
-    private $open = TRUE;
+    private $open = FALSE;
 
     /** @var string tell us what door this is */
     private $location;
@@ -62,7 +62,7 @@ class Door
      * Simple function unlock door by changing $locked and tell us
      */
     public function unlock() {
-        echo "Unlocking door";
+        echo "From Door: Unlocking door";
         echo PHP_EOL;
         $this->locked = FALSE;
     }
@@ -71,7 +71,7 @@ class Door
      * Simple function lock door by changing $locked and tell us
      */
     public function lock() {
-        echo "Locking door";
+        echo "From Door: Locking door";
         echo PHP_EOL;
         $this->locked = TRUE;
     }
@@ -80,8 +80,13 @@ class Door
      * Open the door for us if it isn't already
      */
     public function open() {
+        if ($this->locked) {
+            echo "Door is locked!! Cannot open it! Call unlock() first!";
+            echo PHP_EOL;
+            return;
+        }
         if (!$this->open) {
-            echo "Opening door";
+            echo "From Door: Opening door";
             $this->open = TRUE;
         }
         else {
@@ -95,7 +100,7 @@ class Door
      */
     public function close() {
         if ($this->open) {
-            echo "Closing door";
+            echo "From Door: Closing door";
             $this->open = FALSE;
         }
         else {

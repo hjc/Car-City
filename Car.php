@@ -85,38 +85,93 @@ class Car extends LandVehicle
     }
 
     /**
+     * All door actions, open, close, lock, and unlock all follow identical logic
+     *   and only differ in function calls. So they have been abstracted and generalized
+     *   to this. There are wrapper functions below for lock(), unlock(), open(), and close(),
+     *   but they just pass the relevant arguments over to this function who does all
+     *   the work for doors.
+     *
+     * @param string $fn            Name of the function we want to call
+     * @param int $door             Number of the door we want to open, <0 means all doors
+     * @param null|string $gerund   Modifier for $fn to make it fit the annotated description
+     *                                better, used for closing.
+     */
+    protected  function door_map($fn, $door = -1, $gerund = NULL) {
+        echo PHP_EOL;
+
+        //see if we need to build the $gerund
+        if ($gerund === NULL) {
+            $gerund = ucfirst($fn) . "ing";
+        }
+
+        //see if we're acting on all doors or what
+        if ($door < 0) {
+            //yes, acting on all doors
+            $this->action($gerund . " all doors");
+            $i = 0;
+
+            //loop, grab a door, explain its place, deal with it
+            foreach($this->doors as $d) {
+                $this->action("$gerund door $i: " . $d->get_location());
+                $d->$fn();
+                $i++;
+            }
+        }
+        else{
+            //no not acting on all doors;
+            //if $door is larger than $this->door_count, fix it or we'll get
+            // a null reference to an array
+            if ($door >= $this->door_count) {
+                $door = $this->door_count - 1;
+            }
+            $this->action("$gerund door $door: " . $this->doors[$door]->get_location());
+            $this->doors[$door]->$fn();
+        }
+    }
+
+    /**
+     * Simple function to close the cars doors. A number corresponding to
+     *   a door is passed in then the door that matches that has its close()
+     *   method called.
+     *
+     * Passing in nothing or -1 will close all doors.
+     *
+     * Delegates work to door_map
+     *
+     * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
+     */
+    public function close($door = -1) {
+        $this->door_map("close", $door, "Closing");
+    }
+
+    /**
+     * Simple function to open the cars doors. A number corresponding to
+     *   a door is passed in then the door that matches that has its open()
+     *   method called.
+     *
+     * Passing in nothing or -1 will open all doors.
+     *
+     * Delegates work to door_map
+     *
+     * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
+     */
+    public function open($door = -1) {
+        $this->door_map("open", $door);
+    }
+
+    /**
      * Simple function to unlock the cars doors. A number corresponding to
      *   a door is passed in then the door that matches that has its unlock()
      *   method called.
      *
      * Passing in nothing or -1 will unlock all doors.
      *
+     * Delegates work to door_map
+     *
      * @param int $door     Indicate which door we want to unlock, -1 is all, $door_count is max
      */
     public function unlock($door = -1) {
-        echo PHP_EOL;
-        //unlock all doors? Keeping it as < 0 sanitizes us against any negative
-        // subscript problems we might have if we just checked for $door == -1
-        if ($door < 0) {
-            //yes
-            $this->action("Unlocking all doors");
-            $i = 0;
-
-            //loop, grab a door, explain its place, unlock it
-            foreach($this->doors as $d) {
-                $this->action("Unlocking door $i: " . $d->get_location());
-                $d->unlock();
-            }
-        }
-        else{
-            //no; if $door is larger than $this->door_count, fix it or we'll get
-            // a null reference to an array
-            if ($door >= $this->door_count) {
-                $door = $this->door_count - 1;
-            }
-            $this->action("Unlocking door $door: " . $this->doors[$door]->get_location());
-            $this->doors[$door]->unlock();
-        }
+        $this->door_map("unlock", $door);
     }
 
     /**
@@ -126,74 +181,37 @@ class Car extends LandVehicle
      *
      * Passing in nothing or -1 will lock all doors.
      *
+     * Delegates work to door_map
+     *
      * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
      */
     public function lock($door = -1) {
-        echo PHP_EOL;
-        //lock all doors? Keeping it as < 0 sanitizes us against any negative
-        // subscript problems we might have if we just checked for $door == -1
-        if ($door < 0) {
-            //yes
-            $this->action("Locking all doors");
-            $i = 0;
-
-            //loop, grab a door, explain its place, unlock it
-            foreach($this->doors as $d) {
-                $this->action("Locking door $i: " . $d->get_location());
-                $d->lock();
-                $i++;
-            }
-        }
-        else{
-            //no; if $door is larger than $this->door_count, fix it or we'll get
-            // a null reference to an array
-            if ($door >= $this->door_count) {
-                $door = $this->door_count - 1;
-            }
-            $this->action("Locking door $door: " . $this->doors[$door]->get_location());
-            $this->doors[$door]->lock();
-        }
+        $this->door_map("lock", $door);
     }
 
     /**
-     * Simple function to open the cars doors. A number corresponding to
-     *   a door is passed in then the door that matches that has its open()
-     *   method called.
-     *
-     * Passing in nothing or -1 will lock all doors.
-     *
-     * @param int $door     Indicate which door we want to lock, -1 is all, $door_count is max
+     * Another test function.
+     * Extend parent tests to test for door methods
      */
-    public function open($door = -1) {
-        echo PHP_EOL;
-        //lock all doors? Keeping it as < 0 sanitizes us against any negative
-        // subscript problems we might have if we just checked for $door == -1
-        if ($door < 0) {
-            //yes
-            $this->action("Locking all doors");
-            $i = 0;
-
-            //loop, grab a door, explain its place, unlock it
-            foreach($this->doors as $d) {
-                $this->action("Locking door $i: " . $d->get_location());
-                $d->lock();
-                $i++;
-            }
-        }
-        else{
-            //no; if $door is larger than $this->door_count, fix it or we'll get
-            // a null reference to an array
-            if ($door >= $this->door_count) {
-                $door = $this->door_count - 1;
-            }
-            $this->action("Locking door $door: " . $this->doors[$door]->get_location());
-            $this->doors[$door]->lock();
-        }
-    }
-
     public function test() {
         parent::test();
+        echo PHP_EOL . "First open should fail, locked doors" . PHP_EOL;
+        $this->open();
         $this->unlock();
+
+        echo PHP_EOL . "This should succeed";
+        $this->open();
+        $this->close();
         $this->lock();
+
+        echo PHP_EOL . "Should tell us doors are closed already";
+        $this->close();
+
+        echo PHP_EOL . "Testing results for single doors";
+        $this->open(0);
+        $this->unlock(0);
+        $this->open(0);
+        $this->close(0);
+        $this->lock(0);
     }
 }

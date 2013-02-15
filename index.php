@@ -24,8 +24,7 @@ ini_set('display_errors', '1');
 $c = [['Motorcycle', 115, 125]];
 
 $cycle = new Motorcycle(1000, 125);
-//$cycle->test();
-//test($cycle);
+$cycle->test();
 
 $car = new Car(2000, 150, 2);
 $car->test();
