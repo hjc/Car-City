@@ -7,7 +7,20 @@
  * To change this template use File | Settings | File Templates.
  */
 namespace Steering;
-trait Drive
+/**
+ * Very simple trait to describe a core aspect of driving: turning. Implements
+ *   a turn_left and turn_right method that takes in a number of degrees
+ *   and works for any Vehicle
+ *
+ * It then specifies the abstract function: turn_reset which represents returning
+ *   the steering device to its original, straight position. Each steering device
+ *   is responsible for implementing that on its own.
+ *
+ * @package     VehicleControls
+ * @subpackage  SteeringWheel
+ * @author      Hayden Chudy <hjc1710@gmail.com>
+ */
+trait Turn
 {
     /**
      * This function takes in a number of degrees the motorcycle wants to turn left
@@ -40,7 +53,7 @@ trait Drive
         $this->left($deg);
 
         //reset handlebars to original positions
-        $this->rotate_reset();
+        $this->turn_reset();
     }
 
     /**
@@ -74,9 +87,9 @@ trait Drive
         $this->right($deg);
 
         //reset handlebars to original positions
-        $this->rotate_reset();
+        $this->turn_reset();
     }
 
     /** stub method to represent resetting the main controlling device */
-    abstract public function rotate_reset();
+    abstract protected function turn_reset();
 }

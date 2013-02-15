@@ -133,6 +133,15 @@ abstract class Vehicle
      * @param float $duration   Acceleration time, in s
      */
     public function accelerate($rate, $duration) {
+        //make sure engine is on
+        if (!$this->engine_on) {
+            echo PHP_EOL;
+            $this->action("ERROR: Engine not on! Start vehicle first!");
+            return;
+        }
+
+        //engine is on, go!
+
         //if $rate is negative, pass it off to decelerate
         if ($rate < 0) {
             $this->decelerate(abs($rate), $duration);
@@ -165,6 +174,14 @@ abstract class Vehicle
      * @param float $duration      Acceleration time, in s
      */
     public function decelerate($rate, $duration) {
+        //make sure engine is on
+        if (!$this->engine_on) {
+            echo PHP_EOL;
+            $this->action("ERROR: Engine not on! Start vehicle first!");
+            return;
+        }
+        //engine is on, go!
+
         //if $rate is negative, pass it off to accelerate
         if ($rate < 0) {
             $this->accelerate(abs($rate), $duration);
@@ -196,6 +213,14 @@ abstract class Vehicle
      * @param float $speed
      */
     public function change_speed($speed) {
+        //make sure engine is on
+        if (!$this->engine_on) {
+            echo PHP_EOL;
+            $this->action("ERROR: Engine not on! Start vehicle first!");
+            return;
+        }
+
+        //engine is on, go!
         echo PHP_EOL;
         $this->action("is changing speed to $speed");
 
@@ -220,9 +245,20 @@ abstract class Vehicle
      *  method so child classes do not need to know how to manipulate direction
      *  in order to use.
      *
+     * We can check to see if the engine is on here instead of making child classes
+     *   check in their turn code.
+     *
      * @param float $deg        The amount of degrees we want to turn to the left
      */
     protected function left($deg) {
+        //make sure engine is on
+        if (!$this->engine_on) {
+            echo PHP_EOL;
+            $this->action("LEFT TURN ERROR: Engine not on! Start vehicle first!");
+            return;
+        }
+
+        //it is, go
         $this->direction -= $deg;
 
         //keep the direction ranging between 0 and 360 so it's easy to figure out where we're
@@ -238,6 +274,14 @@ abstract class Vehicle
      * @param float $deg        The amount of degrees we want to turn to the right
      */
     protected function right($deg) {
+        //make sure engine is on
+        if (!$this->engine_on) {
+            echo PHP_EOL;
+            $this->action("RIGHT TURN ERROR: Engine not on! Start vehicle first!");
+            return;
+        }
+
+        //it is, go
         $this->direction += $deg;
 
         //keep the direction ranging between 0 and 360 so it's easy to figure out where we're
@@ -396,4 +440,65 @@ abstract class Vehicle
      * Stop the vehicle.
      */
     abstract public function stop();
+
+    /**
+     * One of our massive test functions. This is generic Vehicle though.
+     *
+     * There are no traits that define turn_left and turn_right, but all Vehicles
+     *   will need to implement that through some trait. Putting the trait in here
+     *   causes access issues and doesn't make as much sense as adding it to a
+     *   higher level class (like the Motorcycle's HandleBars).
+     */
+    public function test() {
+        //echo LandVehicle::$land_count;
+
+        //test starting the Vehicle and setting the key
+        $this->start('abc');
+        $key = '1234ac';
+        $this->set_password($key);
+        $this->start("abc");
+        $this->start($key);
+        $this->engine_state();
+
+        //get bearings and turn on wipers/headlights
+        $this->get_direction();
+        $this->check_headlights();
+        $this->headlights_on();
+        $this->wipers_on();
+        $this->check_wipers();
+
+        //start driving
+        $this->accelerate(25, 4);
+        $this->get_speed();
+        $this->change_speed(1000);
+        $this->get_speed();
+        $this->turn_left(180);
+        $this->get_direction();
+        $this->turn_right(360);
+        $this->get_direction();
+        $this->turn_left(90.4);
+        $this->get_direction();
+        $this->turn_right(270.4);
+        $this->get_direction();
+        $this->decelerate(25, 4);
+        $this->get_speed();
+
+        //come to a stop after many turns
+        $this->change_speed(0);
+        $this->get_speed();
+
+        //ensure we can't get negative speeds
+        $this->decelerate(25, 4);
+        $this->get_speed();
+
+        $this->engine_state();
+        //ensure we will stop with current_speed at 0 when stop() is called.
+        $this->accelerate(50, 2);
+        $this->stop();
+        $this->engine_state();
+
+        //one last headlight test
+        $this->check_headlights();
+        $this->headlights_off();
+    }
 }

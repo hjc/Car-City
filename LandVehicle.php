@@ -229,4 +229,23 @@ Please make one by using the set_password command!" . PHP_EOL;
         $this->engine_on = FALSE;
         $this->action("vehicle off");
     }
+
+    /**
+     * Expand upon Vehicle class to add wheel tests
+     */
+    public function test() {
+        $this->wheel_count();
+        $this->check_tire_pressure();
+
+        $this->accelerate(100, 15);
+
+        parent::test();
+
+        $this->is_parked();
+        $this->park();
+        $this->is_parked();
+        $this->accelerate(100, 15);
+        $this->park();
+        $this->is_parked();
+    }
 }

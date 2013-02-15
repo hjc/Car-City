@@ -19,6 +19,27 @@ class Door
     /** @var bool tell us if door is open */
     private $open = TRUE;
 
+    /** @var string tell us what door this is */
+    private $location;
+
+    /**
+     * Very simple constructor that lets us store a door's location
+     *
+     * @param string $loc
+     */
+    public function __construct($loc) {
+        $this->location = $loc;
+    }
+
+    /**
+     * Return a descriptive string saying where this door is on the car.
+     *
+     * @return string       The location of this door
+     */
+    public function get_location() {
+       return $this->location;
+    }
+
     /**
      * Return a bool that tells us if door is open.
      *
@@ -41,8 +62,8 @@ class Door
      * Simple function unlock door by changing $locked and tell us
      */
     public function unlock() {
-        echo PHP_EOL;
         echo "Unlocking door";
+        echo PHP_EOL;
         $this->locked = FALSE;
     }
 
@@ -50,8 +71,8 @@ class Door
      * Simple function lock door by changing $locked and tell us
      */
     public function lock() {
-        echo PHP_EOL;
         echo "Locking door";
+        echo PHP_EOL;
         $this->locked = TRUE;
     }
 
@@ -66,6 +87,7 @@ class Door
         else {
             echo "Door already open";
         }
+        echo PHP_EOL;
     }
 
     /**
@@ -79,5 +101,6 @@ class Door
         else {
             echo "Door already closed";
         }
+        echo PHP_EOL;
     }
 }
