@@ -30,15 +30,13 @@ class Motorcycle extends LandVehicle implements Steering\iHandleBars
         //setup wheel count
         $this->num_wheels = 2;
 
-        //set top speed
-        $this->top_speed = $top_speed;
         echo "Created new Motorcycle, name: " . $this->name() . ", NUMBER: " . Motorcycle::$motorcycle_count .  PHP_EOL;
         echo "Attributes:" . PHP_EOL . "\tWeight: $weight" . PHP_EOL
             . "\tTop Speed: $top_speed" . PHP_EOL;
 
         //$cap = 1; only one person can safely ride in a motorcycle, parent sets weight and
         // capacity
-        parent::__construct($weight, 1);
+        parent::__construct($weight, 1, 2, $top_speed);
     }
 
     /**

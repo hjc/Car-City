@@ -43,10 +43,14 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
      * @param int $weight       The weight of the vehicle, in lbs.
      * @param int $cap     The max number of people the vehicle can hold
      */
-    public function __construct($weight, $cap) {
+    public function __construct($weight, $cap, $num_wheels, $top_speed = NULL) {
         $this->landvehicle_number = LandVehicle::$land_count++;
+
+        //all LandVehicles have wheels, so we'll init here
+        $this->num_wheels = $num_wheels;
+
         echo "Created new Land Vehicle, NUMBER:" . LandVehicle::$land_count . PHP_EOL;
-        parent::__construct($weight, $cap);
+        parent::__construct($weight, $cap, $top_speed);
     }
 
     /**
@@ -74,21 +78,6 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
     public function wheel_count() {
         echo PHP_EOL;
         $this->action("has {$this->num_wheels} wheels");
-    }
-
-    /**
-     * Tell us the state of the engine, ie is it on or not (note vehicle turns it off
-     *   automatically).
-     */
-    public function engine_state() {
-        echo PHP_EOL;
-        $this->action("checking engine");
-        if ($this->engine_on) {
-            $this->action("engine is on! Don't forget to turn it off");
-        }
-        else {
-            $this->action("engine is off");
-        }
     }
 
     /**
@@ -122,17 +111,6 @@ abstract class LandVehicle extends Vehicle implements TransportMethod\iWheels
         $this->action("braking");
         $this->change_speed(0);
     }
-
-    /*
-     * for cars,
-     * need doors, count and array[count] of TF to indicate open or closed
-     * door status, list number of doors, location (driver, passenger, back driver), locked, open
-     * need to lock and unlock doors
-     * need to open doors, check if they are locked first
-     *
-     * for trucks,
-     * need to lower beds
-     */
 
     /**
      * Indicate if LandVehicle is parked.

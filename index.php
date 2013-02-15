@@ -16,61 +16,71 @@ function __autoload($class_name) {
     include dirname(__FILE__) . '/' . $class_name . '.php';
 }
 
+function test (Vehicle $c) {
+    //echo LandVehicle::$land_count;
+    $c->wheel_count();
+    $c->start('abc');
+    $key = '1234ac';
+    $c->set_password($key);
+    $c->start("abc");
+    $c->start($key);
+    $c->get_direction();
+    $c->check_headlights();
+    $c->headlights_on();
+    $c->wipers_on();
+    $c->check_tire_pressure();
+    $c->check_wipers();
+    $c->accelerate(25, 4);
+    $c->get_speed();
+    $c->change_speed(1000);
+    $c->get_speed();
+    $c->turn_left(180);
+    $c->get_direction();
+    $c->turn_right(360);
+    $c->get_direction();
+    $c->turn_left(90.4);
+    $c->get_direction();
+    $c->turn_right(270.4);
+    $c->get_direction();
+    $c->decelerate(25, 4);
+    $c->get_speed();
+    $c->change_speed(0);
+    $c->get_speed();
+
+    $c->decelerate(25, 4);
+    $c->get_speed();
+
+
+    $c->is_parked();
+    $c->park();
+    $c->is_parked();
+    $c->accelerate(100, 15);
+    $c->park();
+    $c->is_parked();
+    $c->accelerate(50, 2);
+    $c->stop();
+
+
+
+
+    $c->check_headlights();
+    $c->headlights_off();
+}
+
 error_reporting(E_ALL);
 ini_set('display_errors', '1');
 
+$c = [['Motorcycle', 115, 125]];
 
+$cycle = new Motorcycle(1000, 125);
+test($cycle);
 
 /**
  * MOTORCYCLE TEST SUITE!!
  *
  * Create some motorcycles and run them through their paces.
  */
-$cycle = new Motorcycle(115, 125);
-//echo LandVehicle::$land_count;
-$cycle->wheel_count();
-$cycle->start('abc');
-$key = '1234ac';
-$cycle->set_password($key);
-$cycle->start("abc");
-$cycle->start($key);
-$cycle->get_direction();
-$cycle->check_headlights();
-$cycle->headlights_on();
-$cycle->wipers_on();
-$cycle->check_tire_pressure();
-$cycle->check_wipers();
-$cycle->accelerate(25, 4);
-$cycle->get_speed();
-$cycle->change_speed(1000);
-$cycle->get_speed();
-$cycle->turn_left(180);
-$cycle->get_direction();
-$cycle->turn_right(360);
-$cycle->get_direction();
-$cycle->turn_left(90.4);
-$cycle->get_direction();
-$cycle->turn_right(270.4);
-$cycle->get_direction();
-$cycle->decelerate(25, 4);
-$cycle->get_speed();
-$cycle->change_speed(0);
-$cycle->get_speed();
 
-$cycle->is_parked();
-$cycle->park();
-$cycle->is_parked();
-$cycle->accelerate(100, 15);
-$cycle->park();
-$cycle->is_parked();
-$cycle->accelerate(50, 2);
-$cycle->stop();
-
-
-
-
-$cycle->check_headlights();
-$cycle->headlights_off();
 
 
 

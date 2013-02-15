@@ -76,15 +76,19 @@ abstract class Vehicle
      * @param int $weight       The weight of the vehicle, in lbs.
      * @param int $cap     The max number of people the vehicle can hold
      */
-    function __construct($weight, $cap) {
+    function __construct($weight, $cap, $top_speed = NULL) {
         //make a salt for this vehicle's password
         $this->vehicle_salt = $this->create_salt();
 
         //set vehicle number and then increment vehicle count
         $this->vehicle_number = Vehicle::$vehicle_count++;
 
+        //handle initing all general characteristics that all vehicles have
         $this->weight = $weight;
         $this->capacity = $cap;
+
+        //not all vehicles have a hard set top speed, so we let that be NULL
+        $this->top_speed = $top_speed;
 
         echo "Created new Vehicle, NUMBER: " . Vehicle::$vehicle_count . PHP_EOL;
     }
@@ -143,7 +147,13 @@ abstract class Vehicle
             "is accelerating by {$rate}m/s^2 for $duration seconds for a total speed increase of: {$speed_increase}m/s"
         );
 
-        $this->current_speed += $speed_increase;
+        if ($this->current_speed + $speed_increase >= $this->top_speed){
+            $this->action("has reached its top speed of: {$this->top_speed}m/s");
+            $this->current_speed = $this->top_speed;
+        }
+        else {
+            $this->current_speed += $speed_increase;
+        }
     }
 
     /**
@@ -169,7 +179,13 @@ abstract class Vehicle
             "is decelerating by {$rate}m/s^2 for $duration seconds for a total speed decrease of: {$speed_decrease}m/s"
         );
 
-        $this->current_speed -= $speed_decrease;
+        if ($this->current_speed - $speed_decrease <= 0) {
+            $this->action("has reach a speed of 0 m/s and has stopped");
+            $this->current_speed = 0;
+        }
+        else {
+            $this->current_speed -= $speed_decrease;
+        }
     }
 
     /**
@@ -319,8 +335,6 @@ abstract class Vehicle
      */
     public function get_direction() {
         echo PHP_EOL;
-        echo $this->direction;
-        echo "STUB READ DIREC\n";
         $this->action("checking current direction");
         if ($this->direction == 0) {
             $this->action("is facing true north");
@@ -356,7 +370,23 @@ abstract class Vehicle
     }
 
     /**
-     * Start the vehicle.
+     * Tell us the state of the engine, ie is it on or not (note vehicle turns it off
+     *   automatically).
+     */
+    public function engine_state() {
+        echo PHP_EOL;
+        $this->action("checking engine");
+        if ($this->engine_on) {
+            $this->action("engine is on! Don't forget to turn it off");
+        }
+        else {
+            $this->action("engine is off");
+        }
+    }
+
+    /**
+     * Start the vehicle. Will let Vehicle Types implement it since some start
+     *   different than others.
      *
      * @param string $key       A password the user provides to start their vehicle (high-tech, huh?)
      */
